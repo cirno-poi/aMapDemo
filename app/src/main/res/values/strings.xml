@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MapDemo</string>
+
+    <string name="marker_clicked">点击了marker</string>
+</resources>
