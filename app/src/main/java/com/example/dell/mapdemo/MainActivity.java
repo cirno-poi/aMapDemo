@@ -16,13 +16,11 @@ import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Toast;
 
-import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
@@ -30,6 +28,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.amap.api.maps.model.animation.Animation;
 import com.amap.api.maps.model.animation.ScaleAnimation;
 
 import java.io.File;
@@ -39,8 +38,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements AMap.OnMarkerClickListener, View.OnClickListener {
 
@@ -89,11 +86,59 @@ public class MainActivity extends AppCompatActivity implements AMap.OnMarkerClic
 
     private void clearAllMarker() {
 
+
+        ScaleAnimation mADDAnimation = new ScaleAnimation(1, 0, 1, 0);
+//            AlphaAnimation mADDAnimation = new AlphaAnimation(0, 1);
+        mADDAnimation.setInterpolator(new OvershootInterpolator());
+        mADDAnimation.setDuration(300);
+//        MyAnimationListener listener = new MyAnimationListener(mAddMarkers);
+//        mADDAnimation.setAnimationListener(listener);
+
         if (mAddMarkers != null) {
             for (Marker marker : mAddMarkers) {
+                marker.setAnimation(mADDAnimation);
+                marker.startAnimation();
+//                marker.remove();
+            }
+
+            mapView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    for (Marker marker : mAddMarkers) {
+                        marker.remove();
+                    }
+                    mAddMarkers.clear();
+                }
+            }, 250);
+
+
+        }
+    }
+
+    /**
+     * marker渐变动画，动画结束后将Marker删除
+     */
+    class MyAnimationListener implements Animation.AnimationListener {
+
+        private List<Marker> markerList;
+
+        MyAnimationListener(List<Marker> markerList) {
+            this.markerList = markerList;
+        }
+
+        @Override
+        public void onAnimationStart() {
+
+        }
+
+        @Override
+        public void onAnimationEnd() {
+
+            for (Marker marker : markerList) {
+
                 marker.remove();
             }
-            mAddMarkers.clear();
+
         }
     }
 
