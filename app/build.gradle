@@ -62,4 +62,5 @@ dependencies {
     implementation 'com.amap.api:search:6.1.0'
     implementation 'com.amap.api:3dmap:6.1.0'
     implementation 'com.amap.api:location:3.8.0'
+    implementation 'com.android.support:design:27.1.0'
 }

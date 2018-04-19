@@ -3,10 +3,16 @@ package com.example.dell.mapdemo;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.provider.SyncStateContract;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Toast;
 
@@ -18,6 +24,7 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
@@ -29,10 +36,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements AMap.OnMarkerClickListener {
+public class MainActivity extends AppCompatActivity implements AMap.OnMarkerClickListener, View.OnClickListener {
+
+    private static final String TAG = "233333";
 
     private MapView mapView;
     private AMap aMap;
@@ -45,6 +57,11 @@ public class MainActivity extends AppCompatActivity implements AMap.OnMarkerClic
 
     private MyLocationStyle myLocationStyle;
 
+    private FloatingActionButton addFab;
+    private Toolbar toolbar;
+
+    public List<Marker> mAddMarkers = new ArrayList<Marker>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,10 +69,39 @@ public class MainActivity extends AppCompatActivity implements AMap.OnMarkerClic
         mapView = findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         initView();
-        setLocation();
+//        setLocation();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.clear_all) {
+            clearAllMarker();
+        }
+
+        return true;
+    }
+
+    private void clearAllMarker() {
+
+        if (mAddMarkers != null) {
+            for (Marker marker : mAddMarkers) {
+                marker.remove();
+            }
+            mAddMarkers.clear();
+        }
     }
 
     private void initView() {
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         //初始化地图控制器对象
         if (aMap == null) {
             aMap = mapView.getMap();
@@ -71,8 +117,10 @@ public class MainActivity extends AppCompatActivity implements AMap.OnMarkerClic
         aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
         aMap.setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
         aMap.getUiSettings().setMyLocationButtonEnabled(true);//设置默认定位按钮是否显示，非必需设置。
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(11f));//设置地图缩放
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(14f));//设置地图缩放
 
+        addFab = findViewById(R.id.fab);
+        addFab.setOnClickListener(this);
         setMapCustomStyleFile(this);
     }
 
@@ -122,38 +170,77 @@ public class MainActivity extends AppCompatActivity implements AMap.OnMarkerClic
 
     private void setLocation() {
 
-
-        MarkerOptions markerOptions = new MarkerOptions();
+        final MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(new LatLng(31.23, 121.47));//第一个参数是维度，第二个是经度
         markerOptions.title("上海");
         markerOptions.anchor(0.5f, 0.5f);
         markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_mark_test));
 
+        mapView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                final Marker marker = aMap.addMarker(markerOptions);
+
+                ScaleAnimation mADDAnimation = new ScaleAnimation(0, 1, 0, 1);
+//            AlphaAnimation mADDAnimation = new AlphaAnimation(0, 1);
+                mADDAnimation.setInterpolator(new OvershootInterpolator());
+                mADDAnimation.setDuration(300);
+                marker.setAnimation(mADDAnimation);
+                marker.startAnimation();
+
+            }
+        }, 3000);
+
+        aMap.setOnMarkerClickListener(this);
+    }
+
+    /**
+     * 添加随机点到地图
+     *
+     * @param title 点标题
+     */
+    private void addMarker(String title) {
+        final MarkerOptions markerOptions = new MarkerOptions();
+
+//        31.184230, 121.358779
+//        31.140600, 121.404906
+
+        double minLat = 31.140600;
+        double maxLat = 31.184230;
+        double minLng = 121.358779;
+        double maxLng = 121.404906;
+
+        Random random = new Random();
+
+        double lat = random.nextDouble() * (maxLat - minLat) + minLat;
+        Log.d(TAG, "随机产生的纬度: " + lat);
+
+        double lng = random.nextDouble() * (maxLng - minLng) + minLng;
+        Log.d(TAG, "随机产生的纬度: " + lng);
+
+
+        markerOptions.position(new LatLng(lat, lng));//第一个参数是维度，第二个是经度
+        markerOptions.title(title);
+        markerOptions.anchor(0.5f, 0.5f);
+
+        View view = LayoutInflater.from(this).inflate(R.layout.marker_layout, null);
+        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromView(view);
+
+
+        markerOptions.icon(bitmapDescriptor);
 
         final Marker marker = aMap.addMarker(markerOptions);
+//        aMap.addMarkers()
 
         ScaleAnimation mADDAnimation = new ScaleAnimation(0, 1, 0, 1);
 //            AlphaAnimation mADDAnimation = new AlphaAnimation(0, 1);
         mADDAnimation.setInterpolator(new OvershootInterpolator());
         mADDAnimation.setDuration(300);
         marker.setAnimation(mADDAnimation);
+        marker.startAnimation();
 
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                /**
-                 *要执行的操作
-                 */
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        marker.startAnimation();
-                    }
-                });
-            }
-        };
-        Timer timer = new Timer();
-        timer.schedule(task, 3000);//3秒后执行TimeTask的run方法
+        mAddMarkers.add(marker);
 
         aMap.setOnMarkerClickListener(this);
 
@@ -197,5 +284,14 @@ public class MainActivity extends AppCompatActivity implements AMap.OnMarkerClic
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.fab) {
+            addMarker("添加点");
+        }
+
     }
 }

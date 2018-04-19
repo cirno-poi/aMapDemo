@@ -8,4 +8,26 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppThemeLightBlue" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/primary_color_light_blue</item>
+        <item name="android:colorPrimaryDark">@color/primary_color_light_blue_dark</item>
+        <item name="android:colorAccent">@color/accent_color_light_blue</item>
+        <item name="colorPrimary">@color/primary_color_light_blue</item>
+        <item name="colorPrimaryDark">@color/primary_color_light_blue_dark</item>
+        <item name="colorAccent">@color/accent_color_light_blue</item>
+        <item name="android:colorButtonNormal">@color/accent_color_light_blue</item>
+    </style>
+
+    <style name="ToolbarPopupTheme" parent="ThemeOverlay.AppCompat.Light">
+        <!--<item name="android:colorBackground">#000000</item> 也可以设置背景色以及menu中的其他属性-->
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+    </style>
+
+    <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>  <!--设置不覆盖锚点-->
+    </style>
+
 </resources>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        android:layout_marginBottom="3dp"
+        android:background="@drawable/bg_map_marker_shadow"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="2dp">
+
+        <RelativeLayout
+            android:id="@+id/left_bg"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/icon_map_left_bg_d"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/map_icon_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_map_left" />
+
+            <RelativeLayout
+                android:visibility="gone"
+                android:layout_centerInParent="true"
+                android:id="@+id/text_wai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp">
+
+                <TextView
+                    android:id="@+id/left_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="13"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/left_text_jia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_toRightOf="@+id/left_text"
+                    android:text="+"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@+id/discount_fr"
+            android:layout_width="wrap_content"
+            android:layout_height="30.5dp"
+            android:layout_toRightOf="@+id/left_bg"
+            android:background="@drawable/map_marker_bg">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/right"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_toRightOf="@+id/center"
+                    android:scaleType="centerCrop" />
+
+                <ImageView
+                    android:id="@+id/center"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginRight="-7dp"
+                    android:layout_toRightOf="@+id/left" />
+
+                <ImageView
+                    android:id="@+id/left"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="-7dp"
+                    android:background="@color/primary_color_red"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/icon_map_left" />
+                <!--<ImageView-->
+                <!--android:id="@+id/left"-->
+                <!--android:layout_width="28dp"-->
+                <!--android:layout_height="28dp"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_marginRight="-10dp"-->
+                <!--android:background="@drawable/bg_map_marker_ov"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--android:src="@drawable/icon_map_left" />-->
+                <!--<com.baseandroid.widget.customimageview.CircleImageViewWithStroke-->
+                <!--android:id="@+id/left"-->
+                <!--android:layout_width="28dp"-->
+                <!--android:layout_height="28dp"-->
+                <!--app:border_width="4dp"-->
+                <!--app:border_color="@color/red"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_marginRight="-10dp"-->
+                <!--android:scaleType="center"-->
+                <!--android:src="@drawable/icon_map_left" />-->
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/marker_discount_ly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="测试测试"
+                    android:textColor="@color/md_primary_black"
+                    android:textSize="11sp" />
+
+                <!--<TextView-->
+                <!--android:id="@+id/marker_discount_zhe"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="3dp"-->
+                <!--android:text="折"-->
+                <!--android:textSize="11sp" />-->
+            </LinearLayout>
+        </FrameLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/des_ly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/left_bg"
+        android:background="@drawable/maphome_marker_bg"
+        android:gravity="center"
+        android:minWidth="24dp"
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="2dp">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxEms="7"
+            android:text="测试测试"
+            android:textColor="@color/md_primary_black"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/text_deng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="等"
+            android:textColor="@color/md_primary_black"
+            android:textSize="12sp" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+</LinearLayout>
